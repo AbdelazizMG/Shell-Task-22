@@ -18,7 +18,7 @@
 
 
 
-u8 delay_Flag = 1;  /// Delay Flag for 3 seconds delay
+u8 delay_Flag = 1;         /// Delay Flag for 3 seconds delay
 u8 Flag_Tx = 2;            /* Flag to be sent by UART to the other MCU, if Flag_Tx = 1 : Busy  , Flag_Tx = 0 : hungry */
 u8 Flag_Rx = '.';          /* Flag to save data received from other MCU */
 u8 Flag_Button_Click =1;   /* Flag to disable Buttons when unwanted */
@@ -97,13 +97,9 @@ int main(void)
 				
 				delay_Flag=0;
 				delay_Init();
+				
 				/*Return to Ideal State with Setting Flags*/
-				/*LCD_Clear();
-				LCD_WriteSentence((const u8*)"Choose Question:");
-				LCD_MoveCursor(0,1);
-				LCD_WriteSentence((const u8*)"1.Busy, 2.Hungry");
-				Flag_Button_Click =1;	Flag_Rx = '.';  Flag_Tx = 2;
-				*/
+				
 				
 			}
 	   }
