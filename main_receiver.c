@@ -16,8 +16,12 @@ int main(void)
 	/*Setting Push Buttons Pins to be input*/
 	SetDataDirection(GPIOA,PullUp,PIN0);        //Yes
 	SetDataDirection(GPIOA,PullUp,PIN1);        //No
+	
+	/* LCD and UART Init */
 	LCD_Init();
 	UART_init(Receiver);
+	
+	/* Ideal State*/
 	LCD_WriteSentence((const u8*)"waiting for");
 	LCD_MoveCursor(0,1);
 	LCD_WriteSentence((const u8*)"question");
@@ -25,7 +29,7 @@ int main(void)
 	u8 Rx = '.';  u8 Tx = 2; u8 Flag_Button_Click =1;
     while(1)
     {
-        Rx = UART_ReceiveChar();
+        Rx = UART_ReceiveChar();   //Receiving Question from other MCU
 		if(Rx != '.' && Rx != 2)
 		{
 			if(Rx == 0)  //Received Hungry
@@ -44,7 +48,7 @@ int main(void)
 				LCD_WriteSentence((const u8*)"1.yes 2.no");
 			}
 		}
-		if(  (CheckBit(GPIOA->PIN.AllRegister,PIN0) && Flag_Button_Click) )
+		if(  (CheckBit(GPIOA->PIN.AllRegister,PIN0) && Flag_Button_Click) )  //Getting First answer option (YES)
 		{
 			LCD_Clear();
 			LCD_WriteSentence((const u8*)"waiting for");
@@ -54,7 +58,7 @@ int main(void)
 			Tx = 0 ; // Yes
 			
 		}
-		else if (CheckBit(GPIOA->PIN.AllRegister,PIN1)&& Flag_Button_Click)
+		else if (CheckBit(GPIOA->PIN.AllRegister,PIN1)&& Flag_Button_Click) //Getting Second answer option (NO)
 		{
 			LCD_Clear();
 			LCD_WriteSentence((const u8*)"waiting for");
@@ -64,9 +68,9 @@ int main(void)
 			Tx = 1; //No
 		}
 		UART_init(Transmitter);
-		UART_SendChar(Tx);
+		UART_SendChar(Tx);  //Sending Answer to other MCU
 		Tx = 2;
-		Flag_Button_Click=1;
+		Flag_Button_Click=1;  //Enable Push Buttons
 		
 		
     }
